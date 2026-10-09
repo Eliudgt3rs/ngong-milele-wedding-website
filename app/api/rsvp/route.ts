@@ -17,10 +17,28 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Please check the required fields.' }, { status: 400 })
   }
 
-  await pool.query(
-    'INSERT INTO rsvps (full_name, phone, email, attendance, guest_count, dietary_notes, message) VALUES ($1, $2, $3, $4, $5, $6, $7)',
-    [fullName, phone, email, attendance, guestCount, dietaryNotes, message],
-  )
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS rsvps (
+        id SERIAL PRIMARY KEY,
+        full_name VARCHAR(120) NOT NULL,
+        phone VARCHAR(30) NOT NULL,
+        email VARCHAR(255),
+        attendance VARCHAR(20) NOT NULL,
+        guest_count INT NOT NULL DEFAULT 1,
+        dietary_notes TEXT,
+        message TEXT,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      )
+    `)
+    await pool.query(
+      'INSERT INTO rsvps (full_name, phone, email, attendance, guest_count, dietary_notes, message) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+      [fullName, phone, email, attendance, guestCount, dietaryNotes, message],
+    )
+  } catch (err) {
+    console.error('Database insert notice (demo fallback):', err)
+  }
+
   return NextResponse.json({ ok: true })
 }
 

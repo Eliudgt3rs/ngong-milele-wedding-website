@@ -4,7 +4,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Atieno & Mulei | 11 November 2026',
-  description: 'Join Atieno and Mulei as they celebrate their wedding at Ngong Milele Grounds.',
+  description: 'Join Atieno and Mulei as they celebrate their wedding at Kisumu Impala Sanctuary.',
   generator: 'v0.app',
   icons: {
     icon: [
